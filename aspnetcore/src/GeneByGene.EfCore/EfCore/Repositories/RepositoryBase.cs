@@ -248,5 +248,10 @@ namespace GeneByGene.EfCore.Repositories
 
             return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }
+
+        public abstract void SaveChange();
+
+        public abstract Task SaveChangeAsync();
+
     }
 }

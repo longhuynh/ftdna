@@ -172,29 +172,6 @@ namespace GeneByGene.EfCore.Repositories
             Table.Attach(entity);
         }
 
-        public DbContext GetDbContext()
-        {
-            return dbContext;
-        }
-
-        public Task EnsureCollectionLoadedAsync<TProperty>(
-            TEntity entity,
-            Expression<Func<TEntity, IEnumerable<TProperty>>> propertyExpression,
-            CancellationToken cancellationToken)
-            where TProperty : class
-        {
-            return dbContext.Entry(entity).Collection(propertyExpression).LoadAsync(cancellationToken);
-        }
-
-        public Task EnsurePropertyLoadedAsync<TProperty>(
-            TEntity entity,
-            Expression<Func<TEntity, TProperty>> propertyExpression,
-            CancellationToken cancellationToken)
-            where TProperty : class
-        {
-            return dbContext.Entry(entity).Reference(propertyExpression).LoadAsync(cancellationToken);
-        }
-
         private TEntity GetFromChangeTrackerOrNull(TPrimaryKey id)
         {
             var entry = dbContext.ChangeTracker.Entries()
@@ -205,6 +182,18 @@ namespace GeneByGene.EfCore.Repositories
                 );
 
             return entry?.Entity as TEntity;
+        }
+
+
+        public override void SaveChange()
+        {
+            dbContext.SaveChanges();
+        }
+
+        public override Task SaveChangeAsync()
+        {
+            dbContext.SaveChangesAsync();
+            return Task.FromResult(0);
         }
     }
 }

@@ -239,5 +239,12 @@ namespace GeneByGene.EfCore.Repositories
         Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
 
         #endregion
+
+        #region SaveChange
+        void SaveChange();
+
+        Task SaveChangeAsync();
+        
+        #endregion
     }
 }

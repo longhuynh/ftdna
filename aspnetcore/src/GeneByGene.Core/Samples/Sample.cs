@@ -20,9 +20,9 @@ namespace GeneByGene.Samples
         public virtual int StatusId { get; set; }
 
         [ForeignKey("StatusId")]
-        public virtual Status Status { get; set; }
+        public Status Status { get; set; }
 
         [ForeignKey("CreateBy")]
-        public virtual User CreatorUser { get; set; }
+        public User CreatorUser { get; set; }
     }
 }

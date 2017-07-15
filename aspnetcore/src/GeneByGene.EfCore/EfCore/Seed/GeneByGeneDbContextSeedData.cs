@@ -13,7 +13,11 @@ namespace GeneByGene.EfCore.Seed
 
         public async Task EnsureSeedData()
         {
-           
+            new DefaultUserCreator(context).Create();
+            new DefaultStatusesCreator(context).Create();
+            new DefaultSampleCreator(context).Create();
+
+            context.SaveChanges();
         }
     }
 }

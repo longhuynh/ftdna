@@ -2,6 +2,8 @@
 using GeneByGene.EfCore;
 using GeneByGene.EfCore.Repositories;
 using GeneByGene.EfCore.Seed;
+using GeneByGene.Host.Dtos;
+using GeneByGene.Samples;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +38,6 @@ namespace GeneByGene.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton(config);
-
-            // services.AddDbContext<GeneByGeneDbContext>();
-
-            //services.AddTransient<DbContext, GeneByGeneDbContext>();
-            //services.AddTransient(typeof(GeneByGeneDbContext));
 
             services.AddDbContext<GeneByGeneDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("Default"))
@@ -82,8 +79,8 @@ namespace GeneByGene.Host
         {
             Mapper.Initialize(config =>
             {
-                //config.CreateMap<TripViewModel, Trip>().ReverseMap();
-                //config.CreateMap<StopViewModel, Stop>().ReverseMap();
+                config.CreateMap<Sample, SampleDto>();
+                config.CreateMap<CreateSampleInput, Sample>();
             });
 
             if (env.IsEnvironment("Development"))
