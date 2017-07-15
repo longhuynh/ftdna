@@ -5,10 +5,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using GeneByGene.Domain.Entities;
-using GeneByGene.EfCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace GeneByGene.EntityFramework.Repositories
+namespace GeneByGene.EfCore.Repositories
 {
     /// <summary>
     ///     Implements IRepository for Entity Framework.
@@ -22,12 +21,17 @@ namespace GeneByGene.EntityFramework.Repositories
         /// <summary>
         ///     Gets EF DbContext object.
         /// </summary>
-        public GeneByGeneDbContext Context;
+        private readonly GeneByGeneDbContext dbContext;
+
+        public EfRepositoryBaseOfTEntityAndTPrimaryKey(GeneByGeneDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
 
         /// <summary>
         ///     Gets DbSet for given entity.
         /// </summary>
-        public virtual DbSet<TEntity> Table => Context.Set<TEntity>();
+        public virtual DbSet<TEntity> Table => dbContext.Set<TEntity>();
 
         public override IQueryable<TEntity> GetAll()
         {
@@ -87,7 +91,7 @@ namespace GeneByGene.EntityFramework.Repositories
         public override TPrimaryKey InsertAndGetId(TEntity entity)
         {
             entity = Insert(entity);
-            Context.SaveChanges();
+            dbContext.SaveChanges();
             return entity.Id;
         }
 
@@ -95,21 +99,21 @@ namespace GeneByGene.EntityFramework.Repositories
         {
             entity = await InsertAsync(entity);
 
-            await Context.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
 
             return entity.Id;
         }
         public override TEntity Update(TEntity entity)
         {
             AttachIfNot(entity);
-            Context.Entry(entity).State = EntityState.Modified;
+            dbContext.Entry(entity).State = EntityState.Modified;
             return entity;
         }
 
         public override Task<TEntity> UpdateAsync(TEntity entity)
         {
             AttachIfNot(entity);
-            Context.Entry(entity).State = EntityState.Modified;
+            dbContext.Entry(entity).State = EntityState.Modified;
             return Task.FromResult(entity);
         }
 
@@ -159,7 +163,7 @@ namespace GeneByGene.EntityFramework.Repositories
 
         protected virtual void AttachIfNot(TEntity entity)
         {
-            var entry = Context.ChangeTracker.Entries().FirstOrDefault(ent => ent.Entity == entity);
+            var entry = dbContext.ChangeTracker.Entries().FirstOrDefault(ent => ent.Entity == entity);
             if (entry != null)
             {
                 return;
@@ -170,7 +174,7 @@ namespace GeneByGene.EntityFramework.Repositories
 
         public DbContext GetDbContext()
         {
-            return Context;
+            return dbContext;
         }
 
         public Task EnsureCollectionLoadedAsync<TProperty>(
@@ -179,7 +183,7 @@ namespace GeneByGene.EntityFramework.Repositories
             CancellationToken cancellationToken)
             where TProperty : class
         {
-            return Context.Entry(entity).Collection(propertyExpression).LoadAsync(cancellationToken);
+            return dbContext.Entry(entity).Collection(propertyExpression).LoadAsync(cancellationToken);
         }
 
         public Task EnsurePropertyLoadedAsync<TProperty>(
@@ -188,12 +192,12 @@ namespace GeneByGene.EntityFramework.Repositories
             CancellationToken cancellationToken)
             where TProperty : class
         {
-            return Context.Entry(entity).Reference(propertyExpression).LoadAsync(cancellationToken);
+            return dbContext.Entry(entity).Reference(propertyExpression).LoadAsync(cancellationToken);
         }
 
         private TEntity GetFromChangeTrackerOrNull(TPrimaryKey id)
         {
-            var entry = Context.ChangeTracker.Entries()
+            var entry = dbContext.ChangeTracker.Entries()
                 .FirstOrDefault(
                     ent =>
                         ent.Entity is TEntity &&

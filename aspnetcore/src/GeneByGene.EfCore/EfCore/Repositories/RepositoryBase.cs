@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GeneByGene.Domain.Entities;
 
-namespace GeneByGene.EntityFramework.Repositories
+namespace GeneByGene.EfCore.Repositories
 {
     /// <summary>
     ///     Base class to implement <see cref="IRepository{TEntity,TPrimaryKey}" />.

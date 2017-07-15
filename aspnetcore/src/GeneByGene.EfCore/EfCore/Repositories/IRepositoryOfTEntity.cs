@@ -1,6 +1,6 @@
 ﻿using GeneByGene.Domain.Entities;
 
-namespace GeneByGene.EntityFramework.Repositories
+namespace GeneByGene.EfCore.Repositories
 {
     /// <summary>
     /// A shortcut of <see cref="IRepository{TEntity,TPrimaryKey}"/> for most used primary key type (<see cref="int"/>).

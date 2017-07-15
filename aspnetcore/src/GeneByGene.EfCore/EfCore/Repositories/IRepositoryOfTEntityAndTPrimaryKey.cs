@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using GeneByGene.Domain.Entities;
 
-namespace GeneByGene.EntityFramework.Repositories
+namespace GeneByGene.EfCore.Repositories
 {
     /// <summary>
     /// This interface is implemented by all repositories to ensure implementation of fixed methods.
