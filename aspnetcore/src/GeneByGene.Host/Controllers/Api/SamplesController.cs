@@ -16,7 +16,7 @@ namespace GeneByGene.Host.Controllers.Api
     [Route("api/samples")]
     public class SamplesController : Controller
     {
-        private ILogger<SamplesController> logger;
+        private readonly ILogger<SamplesController> logger;
         private readonly IRepository<Sample> sampleRepository;
 
         public SamplesController(IRepository<Sample> sampleRepository,
@@ -79,33 +79,40 @@ namespace GeneByGene.Host.Controllers.Api
             }
         }
 
+        [HttpPost("")]
+        public async Task<JsonResult> Post(CreateSampleInput input)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existsSample = await sampleRepository.GetAll()
+                        .FirstOrDefaultAsync(x => x.Barcode == input.Barcode);
+
+                    if (existsSample != null)
+                    {
+                        return Json(BadRequest("This sample exists"));
+                    }
+
+                    var sample = Mapper.Map<Sample>(input);
+                    await sampleRepository.InsertAsync(sample);
+                    await sampleRepository.SaveChangeAsync();
+                    return Json(Ok());
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Failed to save the sample: {ex}");
+            }
+
+            return Json(BadRequest("Failed to save the sample"));
+        }
+
         private IIncludableQueryable<Sample, Status> CreateQuery()
         {
             return sampleRepository.GetAll()
                 .Include(x => x.CreatorUser)
                 .Include(x => x.Status);
-        }
-
-        [HttpPost("")]
-        public async Task<JsonResult> Post(CreateSampleInput input)
-        {
-            if (ModelState.IsValid)
-            {
-                var existsSample = await sampleRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Barcode == input.Barcode);
-
-                if (existsSample != null)
-                {
-                    return Json(BadRequest("This sample exists"));
-                }
-
-                var sample = Mapper.Map<Sample>(input);
-                await sampleRepository.InsertAsync(sample);
-                await sampleRepository.SaveChangeAsync();
-                return Json(Ok());
-            }
-
-            return Json(BadRequest("Failed to save the sample"));
         }
     }
 }
