@@ -6,6 +6,7 @@ using AutoMapper;
 using GeneByGene.EfCore.Repositories;
 using GeneByGene.Host.Dtos;
 using GeneByGene.Samples;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -13,6 +14,9 @@ using Microsoft.Extensions.Logging;
 
 namespace GeneByGene.Host.Controllers.Api
 {
+    /// <summary>
+    ///     Note: Change route for Service Proxy generate by using NSwag reason
+    /// </summary>
     [Route("api/samples")]
     public class SamplesController : Controller
     {
@@ -26,23 +30,26 @@ namespace GeneByGene.Host.Controllers.Api
             this.logger = logger;
         }
 
-        [HttpGet("")]
-        public JsonResult Get()
+        [HttpGet("GetAll")]
+        [EnableCors("CorsPolicy")]
+        public Task<ListResultDto<SampleDto>> GetAll()
         {
             try
             {
                 var results = CreateQuery().ToList();
-                return Json(Ok(Mapper.Map<List<SampleDto>>(results)));
+                return Task.FromResult(new ListResultDto<SampleDto>(
+                    Mapper.Map<List<SampleDto>>(results)
+                ));
             }
             catch (Exception ex)
             {
                 logger.LogError($"Failed to get all samples: {ex}");
-                return Json(BadRequest("Error occurred"));
             }
+            return null;
         }
 
-        [HttpGet("status/{statusId}")]
-        public JsonResult Get(int statusId)
+        [HttpGet("GetByStatus")]
+        public Task<ListResultDto<SampleDto>> GetByStatus(int statusId)
         {
             try
             {
@@ -50,37 +57,40 @@ namespace GeneByGene.Host.Controllers.Api
                     .Where(x => x.StatusId == statusId)
                     .ToList();
 
-                return Json(Ok(Mapper.Map<List<SampleDto>>(results)));
+                return Task.FromResult(new ListResultDto<SampleDto>(
+                    Mapper.Map<List<SampleDto>>(results)
+                ));
             }
             catch (Exception ex)
             {
-                logger.LogError($"Failed to get all samples: {ex}");
-                return Json(BadRequest("Error occurred"));
+                logger.LogError($"Failed to get samples by status: {ex}");
             }
+            return null;
         }
 
-        [HttpGet("user/{userName}")]
-        public JsonResult Get(string userName)
+        [HttpGet("GetByUserName")]
+        public Task<ListResultDto<SampleDto>> GetByUserName(string userName)
         {
             try
             {
                 var results = CreateQuery()
                     .Where(x => x.CreatorUser.FirstName.ToLower().Contains(userName.ToLower()) ||
                                 x.CreatorUser.LastName.ToLower().Contains(userName.ToLower())
-                    )
-                    .ToList();
+                    ).ToList();
 
-                return Json(Ok(Mapper.Map<List<SampleDto>>(results)));
+                return Task.FromResult(new ListResultDto<SampleDto>(
+                    Mapper.Map<List<SampleDto>>(results)
+                ));
             }
             catch (Exception ex)
             {
-                logger.LogError($"Failed to get all samples: {ex}");
-                return Json(BadRequest("Error occurred"));
+                logger.LogError($"Failed to get samples by user name: {ex}");
             }
+            return null;
         }
 
-        [HttpPost("")]
-        public async Task<JsonResult> Post(CreateSampleInput input)
+        [HttpPost("CreateSample")]
+        public async Task<SampleDto> CreateSample([FromBody] CreateSampleInput input)
         {
             try
             {
@@ -91,13 +101,13 @@ namespace GeneByGene.Host.Controllers.Api
 
                     if (existsSample != null)
                     {
-                        return Json(BadRequest("This sample exists"));
+                        throw new Exception("This sample exists");
                     }
 
                     var sample = Mapper.Map<Sample>(input);
                     await sampleRepository.InsertAsync(sample);
                     await sampleRepository.SaveChangeAsync();
-                    return Json(Ok());
+                    return Mapper.Map<SampleDto>(sample);
                 }
             }
             catch (Exception ex)
@@ -105,7 +115,7 @@ namespace GeneByGene.Host.Controllers.Api
                 logger.LogError($"Failed to save the sample: {ex}");
             }
 
-            return Json(BadRequest("Failed to save the sample"));
+            return null;
         }
 
         private IIncludableQueryable<Sample, Status> CreateQuery()

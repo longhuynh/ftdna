@@ -17,6 +17,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeneByGene\GeneByGene.csproj" />
     <ProjectReference Include="..\GeneByGene.EfCore\GeneByGene.EfCore.csproj" />
   </ItemGroup>
 </Project>

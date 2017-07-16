@@ -5,4 +5,8 @@
     <RootNamespace>GeneByGene</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\GeneByGene\GeneByGene.csproj" />
+  </ItemGroup>
+
 </Project>

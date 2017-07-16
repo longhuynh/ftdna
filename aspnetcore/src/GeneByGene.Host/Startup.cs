@@ -5,6 +5,7 @@ using GeneByGene.EfCore.Seed;
 using GeneByGene.Host.Dtos;
 using GeneByGene.Samples;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,23 +51,31 @@ namespace GeneByGene.Host
 
             services.AddLogging();
 
-            services.AddMvc(config =>
+            services.AddMvc(options =>
             {
                 if (env.IsProduction())
                 {
-                    config.Filters.Add(new RequireHttpsAttribute());
+                    options.Filters.Add(new RequireHttpsAttribute());
                 }
-            })
-                .AddJsonOptions(
-                    config =>
-                    {
-                        config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    });
+            }).AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                }
+            );
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
 
             //Swagger - Enable this line and the related lines in Configure method to enable swagger UI
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info { Title = "Gene by Gene API", Version = "v1" });
+                options.SwaggerDoc("v1", new Info {Title = "Gene by Gene API", Version = "v1"});
                 options.DocInclusionPredicate((docName, description) => true);
             });
         }
@@ -77,10 +86,10 @@ namespace GeneByGene.Host
             GeneByGeneDbContextSeedData seeder,
             ILoggerFactory factory)
         {
-            Mapper.Initialize(config =>
+            Mapper.Initialize(options =>
             {
-                config.CreateMap<Sample, SampleDto>();
-                config.CreateMap<CreateSampleInput, Sample>();
+                options.CreateMap<Sample, SampleDto>();
+                options.CreateMap<CreateSampleInput, Sample>();
             });
 
             if (env.IsEnvironment("Development"))
@@ -102,6 +111,8 @@ namespace GeneByGene.Host
                     "{controller=Home}/{action=Index}/{id?}");
             });
 
+            app.UseCors("CorsPolicy");
+
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
 
@@ -109,7 +120,7 @@ namespace GeneByGene.Host
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Gene by Gene API v1");
-                options.DocExpansion("none");
+                //options.DocExpansion("none");
             }); //URL: /swagger
 
             seeder.EnsureSeedData().Wait();
