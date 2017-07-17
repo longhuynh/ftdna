@@ -27,7 +27,9 @@ import { RightSideBarComponent } from '@app/layout/right-sidebar.component';
 
 import { PaginationModule } from 'ngx-bootstrap';
 import { NgxTableModule } from '@ngx-table/ngx-table-module';
-import { TableDemoComponent } from '@app/demo/table/table-demo.component';
+import { SamplesComponent } from '@app/samples/samples.component';
+import { SamplesByStatusComponent } from '@app/samples-by-status/samples-by-status.component';
+import { SamplesByUserComponent } from '@app/samples-by-user/samples-by-user.component';
 
 export function getRemoteServiceBaseUrl(): string {
   return AppConsts.remoteServiceBaseUrl;
@@ -43,7 +45,9 @@ export function getRemoteServiceBaseUrl(): string {
         SideBarNavComponent,
         SideBarFooterComponent,
         RightSideBarComponent,
-        TableDemoComponent
+        SamplesComponent,
+        SamplesByStatusComponent,
+        SamplesByUserComponent
     ],
     imports: [
         BrowserModule,
