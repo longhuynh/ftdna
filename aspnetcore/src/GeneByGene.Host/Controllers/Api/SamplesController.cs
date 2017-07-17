@@ -49,6 +49,7 @@ namespace GeneByGene.Host.Controllers.Api
         }
 
         [HttpGet("GetByStatus")]
+        [EnableCors("CorsPolicy")]
         public Task<ListResultDto<SampleDto>> GetByStatus(int statusId)
         {
             try
@@ -69,6 +70,7 @@ namespace GeneByGene.Host.Controllers.Api
         }
 
         [HttpGet("GetByUserName")]
+        [EnableCors("CorsPolicy")]
         public Task<ListResultDto<SampleDto>> GetByUserName(string userName)
         {
             try
@@ -90,6 +92,7 @@ namespace GeneByGene.Host.Controllers.Api
         }
 
         [HttpPost("CreateSample")]
+        [EnableCors("CorsPolicy")]
         public async Task<SampleDto> CreateSample([FromBody] CreateSampleInput input)
         {
             try
