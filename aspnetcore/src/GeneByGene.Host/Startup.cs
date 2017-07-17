@@ -67,8 +67,8 @@ namespace GeneByGene.Host
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
                         .AllowAnyHeader()
+                        .AllowAnyMethod()
                         .AllowCredentials());
             });
 

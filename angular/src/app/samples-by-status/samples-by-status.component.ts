@@ -18,8 +18,11 @@ export class SamplesByStatusComponent extends PagedListingComponentBase{
     constructor(injector: Injector,
         private comboBoxItemsService: ComboBoxItemsServiceProxy,
         private samplesService: SamplesServiceProxy) {
-        super(injector);
-        this.loadStatuses();        
+        super(injector);          
+    }
+
+    ngOnInit(): void {
+         this.loadStatuses();      
     }
 
     private loadStatuses(){
@@ -40,7 +43,6 @@ export class SamplesByStatusComponent extends PagedListingComponentBase{
 
     private onStatusChange(value){
         this.selectedValue = value;
-        console.log(this.selectedValue);
         this.bindData();
     }
 }

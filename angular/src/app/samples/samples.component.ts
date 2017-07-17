@@ -1,11 +1,14 @@
 ﻿
-import { Component, Injector, AfterViewInit, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { SamplesServiceProxy, SampleDto, CreateSampleInput} from '@shared/service-proxies/service-proxies';
+import { SamplesServiceProxy, SampleDto, CreateSampleInput, ListResultDtoOfSampleDto} from '@shared/service-proxies/service-proxies';
 
 import { PagedListingComponentBase } from "@shared/paged-listing-component-base";
 import { CreateSampleComponent } from "@app/samples/create-sample.component";
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/operator/first';
 
 @Component({
     templateUrl: './samples.component.html',
@@ -13,12 +16,16 @@ import { CreateSampleComponent } from "@app/samples/create-sample.component";
 })
 export class SamplesComponent extends PagedListingComponentBase {  
 
-   @ViewChild('createSampleModal') createSampleModal: CreateSampleComponent;
+    @ViewChild('createSampleModal') createSampleModal: CreateSampleComponent;
+    private sample$: Observable<ListResultDtoOfSampleDto>;
 
     constructor(injector: Injector,
         private samplesService: SamplesServiceProxy) {
-        super(injector);
-        this.bindData();
+        super(injector);       
+    }
+
+    ngOnInit(): void {
+         this.bindData();
     }
     
     private bindData(){

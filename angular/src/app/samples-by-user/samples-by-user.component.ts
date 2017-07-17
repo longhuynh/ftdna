@@ -18,6 +18,10 @@ export class SamplesByUserComponent extends PagedListingComponentBase {
         this.bindData();
     }
 
+    ngOnInit(): void {
+        this.bindData();      
+    }
+
     eventHandler(event) { 
         if(event.keyCode == 13){           
             this.bindData();

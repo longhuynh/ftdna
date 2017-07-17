@@ -72,10 +72,14 @@ export class CreateSampleComponent extends AppComponentBase {
 
     save(): void {
         this.saving = true;
-        console.log(this.sample);
+
         this.sampleService.createSample(this.sample)
             .finally(() => { this.saving = false; })
             .subscribe(() => {               
+                this.close();
+                this.modalSave.emit(null);
+            },
+            (error) =>{  
                 this.close();
                 this.modalSave.emit(null);
             });
