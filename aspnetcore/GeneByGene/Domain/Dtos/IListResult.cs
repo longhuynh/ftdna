@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GeneByGene.Host.Dtos
+namespace GeneByGene.Domain.Dtos
 {
     public interface IListResult<T>
     {

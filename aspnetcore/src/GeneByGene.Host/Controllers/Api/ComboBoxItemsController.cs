@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
+using GeneByGene.Domain.Dtos;
 using GeneByGene.EfCore.Repositories;
 using GeneByGene.Host.Dtos;
 using GeneByGene.Samples;
