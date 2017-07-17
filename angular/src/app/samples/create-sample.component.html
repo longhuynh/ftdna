@@ -1,0 +1,52 @@
+<div bsModal #createSampleModal="bs-modal" class="modal fade" (onShown)="onShown()" tabindex="-1" role="dialog" 
+            aria-labelledby="createSampleModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+
+        <div #modalContent class="modal-content">
+
+            <form *ngIf="active" #createSampleForm="ngForm" id="form_create_sample" novalidate (ngSubmit)="save()">
+
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span>Create new sample</span>
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <input class="form-control" type="text" name="Barcode" [(ngModel)]="sample.barcode" required maxlength="20" minlength="2">
+                            <label class="form-label">Barcode</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <select [(ngModel)]="sample.createBy" name="createBy" class="form-control ui fluid search selection dropdown"> 
+                                <option *ngFor="let user of users" [value]="user.value">{{user.text}}</option>
+                            </select>
+                            <label class="form-label">User</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-float">
+                        <div class="form-line">
+                            <select [(ngModel)]="sample.statusId" name="statusId" class="form-control ui fluid search selection dropdown"> 
+                                <option *ngFor="let status of statuses" [value]="status.value">{{status.text}}</option>
+                            </select>
+                            <label class="form-label">Status</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">Cancel</button>
+                    <button [disabled]="!createSampleForm.form.valid || saving" type="submit" class="btn btn-primary blue">Save</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

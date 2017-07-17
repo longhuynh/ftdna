@@ -4,14 +4,11 @@
             <div class="card card-block panel panel-default panel-body">      
              <h1>Samples by status</h1>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
-          <select class="selectpicker">
-  <option>Mustard</option>
-  <option>Ketchup</option>
-  <option>Relish</option>
-</select>
-                    
+                        <select [(ngModel)]="selectedValue" class="ui fluid search selection dropdown" (change)="onStatusChange($event.target.value)"> 
+                            <option *ngFor="let status of statuses" [value]="status.value">{{status.text}}</option>
+                        </select>
                     </div>                                   
                 </div>
             </div>

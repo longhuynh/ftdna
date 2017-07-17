@@ -20,7 +20,6 @@
       "styles": [
         "assets/fonts/roboto/roboto.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../node_modules/bootstrap-select/dist/css/bootstrap-select.min.css",
         "../node_modules/simple-line-icons/css/simple-line-icons.css",
         "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/toastr/build/toastr.css",
@@ -36,8 +35,8 @@
         "../node_modules/jquery-migrate/dist/jquery-migrate.min.js",
         "../node_modules/js-cookie/src/js.cookie.js",
         "../node_modules/bootstrap/dist/js/bootstrap.js",
-        "../node_modules/bootstrap-select/dist/js/bootstrap-select.min.js",
         "../node_modules/lodash/lodash.min.js",
+        "../node_modules/node-waves/dist/waves.min.js",
         "../node_modules/moment/min/moment.min.js",
         "../node_modules/toastr/toastr.js",
         "../node_modules/sweetalert/dist/sweetalert-dev.js",

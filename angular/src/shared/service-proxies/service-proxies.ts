@@ -427,7 +427,7 @@ export class ListResultDtoOfSampleDto {
 
 export class SampleDto { 
     barcode: string; 
-    createAt: moment.Moment; 
+    createDate: string; 
     statusDescription: string; 
     creatorUserFirstName: string; 
     creatorUserLastName: string; 
@@ -435,7 +435,7 @@ export class SampleDto {
     constructor(data?: any) {
         if (data !== undefined) {
             this.barcode = data["barcode"] !== undefined ? data["barcode"] : null;
-            this.createAt = data["createAt"] ? moment(data["createAt"].toString()) : null;
+            this.createDate = data["createDate"] !== undefined ? data["createDate"] : null;
             this.statusDescription = data["statusDescription"] !== undefined ? data["statusDescription"] : null;
             this.creatorUserFirstName = data["creatorUserFirstName"] !== undefined ? data["creatorUserFirstName"] : null;
             this.creatorUserLastName = data["creatorUserLastName"] !== undefined ? data["creatorUserLastName"] : null;
@@ -450,7 +450,7 @@ export class SampleDto {
     toJS(data?: any) {
         data = data === undefined ? {} : data;
         data["barcode"] = this.barcode !== undefined ? this.barcode : null;
-        data["createAt"] = this.createAt ? this.createAt.toISOString() : null;
+        data["createDate"] = this.createDate !== undefined ? this.createDate : null;
         data["statusDescription"] = this.statusDescription !== undefined ? this.statusDescription : null;
         data["creatorUserFirstName"] = this.creatorUserFirstName !== undefined ? this.creatorUserFirstName : null;
         data["creatorUserLastName"] = this.creatorUserLastName !== undefined ? this.creatorUserLastName : null;

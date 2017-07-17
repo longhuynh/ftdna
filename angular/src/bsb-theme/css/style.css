@@ -12,6 +12,12 @@
     border: 0px transparent !important;
 }
 
+.dropdown, .dropup {
+    position: relative;
+    height: 35px;
+    width: 100%;
+}
+
 .text-red{
     color: red;
 }

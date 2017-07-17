@@ -2,9 +2,9 @@
     <div class="block-header">
          <div class="row">           
             <div class="card card-block panel panel-default panel-body">      
-             <h1>All Samples</h1>
+            <h1>All Samples</h1>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                     <div class="form-line">
                         <input *ngIf="config.filtering" placeholder="Filter all columns"
@@ -13,6 +13,11 @@
                                 (tableChanged)="onChangeTable(config)"/>
                     </div>
                     </div>         
+                </div>
+                 <div class="col-md-6">
+                    <button type="button" data-toggle="modal" class="btn btn-primary btn-circle waves-effect waves-circle waves-float pull-right" (click)="createSample()">
+                    <i class="material-icons">add</i>
+                    </button>
                 </div>
             </div>
             <br>
@@ -40,3 +45,5 @@
         </div>
     </div>
 </div>
+
+<create-sample-modal #createSampleModal (modalSave)="refresh()"></create-sample-modal>

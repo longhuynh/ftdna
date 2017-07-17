@@ -7,7 +7,7 @@ export abstract class PagedListingComponentBase extends AppComponentBase impleme
 
     public columns: Array<any> = [
         { title: 'Barcode', name: 'barcode', filtering: { filterString: '', placeholder: 'Filter by barcode' } },
-        { title: 'Create Date', name: 'createAt' },
+        { title: 'Create Date', name: 'createDate', filtering: { filterString: '', placeholder: 'Filter by date' } },
         { title: 'Status', name: 'statusDescription', sort: false, filtering: { filterString: '', placeholder: 'Filter by status' } },
         { title: 'Creator First Name', name: 'creatorUserFirstName', filtering: { filterString: '', placeholder: 'Filter by first name' } },
         { title: 'Creator Last Name', name: 'creatorUserLastName', filtering: { filterString: '', placeholder: 'Filter by last name' } },

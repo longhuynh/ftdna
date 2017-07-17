@@ -1,5 +1,6 @@
 ﻿using System;
 using GeneByGene.Domain.Dtos;
+using Newtonsoft.Json;
 
 namespace GeneByGene.Host.Dtos
 {
@@ -7,6 +8,9 @@ namespace GeneByGene.Host.Dtos
     {
         public string Barcode { get; set; }
 
+        public string CreateDate => CreateAt.ToString("d");
+
+        [JsonIgnore]
         public DateTime CreateAt { get; set; }
 
         public string StatusDescription { get; set; }
