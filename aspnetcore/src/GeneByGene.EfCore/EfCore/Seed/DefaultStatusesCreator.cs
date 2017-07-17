@@ -16,8 +16,13 @@ namespace GeneByGene.EfCore.Seed
 
         public void Create()
         {
+            CreateStatuses();
+        }
+
+        private void CreateStatuses()
+        {
             var lines = File.ReadAllLines(
-                string.Format(@"{0}\App_Data\{1}", DataHelper.Path, DataHelper.SampleFileName)
+                string.Format(@"{0}\App_Data\{1}", DataHelper.Path, DataHelper.StatusFileName)
             );
             foreach (var line in lines.Skip(1))
             {
@@ -28,27 +33,19 @@ namespace GeneByGene.EfCore.Seed
         private void AddStatusIfNotExists(string line)
         {
             var values = line.Split(',');
-            if (values.Length < 5)
+            if (values.Length < 2)
                 return;
 
-            var barcode = values[1];
-            var createdAt = DateTime.Parse(values[2]);
-            var createdBy = int.Parse(values[3]) + 1; // Because UserId in Users.txt begin 0
-            var statusId = int.Parse(values[4]) + 1; // Because StatusId in Statuses.txt begin 0
+            var description = values[1];
 
-            if (context.Samples.Any(s => s.Barcode == barcode))
+            if (context.Statuses.Any(s => s.Description == description))
             {
                 return;
             }
 
-            context.Samples.Add(new Sample
-            {
-                Barcode = barcode,
-                CreateAt = createdAt,
-                CreateBy = createdBy,
-                StatusId = statusId
-            });
+            context.Statuses.Add(new Status { Description = description });
             context.SaveChanges();
         }
+
     }
 }

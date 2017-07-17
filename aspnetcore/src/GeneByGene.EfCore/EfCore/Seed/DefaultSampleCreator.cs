@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using GeneByGene.Samples;
 
@@ -18,31 +19,40 @@ namespace GeneByGene.EfCore.Seed
             CreateSamples();
         }
 
-        private void CreateSamples()
+        public void CreateSamples()
         {
             var lines = File.ReadAllLines(
                 string.Format(@"{0}\App_Data\{1}", DataHelper.Path, DataHelper.SampleFileName)
             );
             foreach (var line in lines.Skip(1))
             {
-                AddSamplesIfNotExists(line);
+                AddSampleIfNotExists(line);
             }
         }
 
-        private void AddSamplesIfNotExists(string line)
+        private void AddSampleIfNotExists(string line)
         {
             var values = line.Split(',');
-            if (values.Length < 2)
+            if (values.Length < 5)
                 return;
 
-            var description = values[1];
+            var barcode = values[1];
+            var createdAt = DateTime.Parse(values[2]);
+            var createdBy = int.Parse(values[3]) + 1; // Because UserId in Users.txt begin 0
+            var statusId = int.Parse(values[4]) + 1; // Because StatusId in Statuses.txt begin 0
 
-            if (context.Statuses.Any(s => s.Description == description))
+            if (context.Samples.Any(s => s.Barcode == barcode))
             {
                 return;
             }
 
-            context.Statuses.Add(new Status { Description = description });
+            context.Samples.Add(new Sample
+            {
+                Barcode = barcode,
+                CreateAt = createdAt,
+                CreateBy = createdBy,
+                StatusId = statusId
+            });
             context.SaveChanges();
         }
     }

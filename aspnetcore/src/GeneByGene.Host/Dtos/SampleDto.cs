@@ -5,14 +5,14 @@ namespace GeneByGene.Host.Dtos
 {
     public class SampleDto : EntityDto
     {
-        public virtual string Barcode { get; set; }
+        public string Barcode { get; set; }
 
-        public virtual DateTime CreateAt { get; set; }
+        public DateTime CreateAt { get; set; }
 
-        public virtual string StatusDescription { get; set; }
+        public string StatusDescription { get; set; }
 
-        public virtual string CreatorUserFirstName { get; set; }
+        public string CreatorUserFirstName { get; set; }
 
-        public virtual string CreatorUserLastName { get; set; }
+        public string CreatorUserLastName { get; set; }
     }
 }

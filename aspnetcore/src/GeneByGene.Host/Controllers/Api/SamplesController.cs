@@ -71,13 +71,15 @@ namespace GeneByGene.Host.Controllers.Api
 
         [HttpGet("GetByUserName")]
         [EnableCors("CorsPolicy")]
-        public Task<ListResultDto<SampleDto>> GetByUserName(string userName)
+        public Task<ListResultDto<SampleDto>> GetByUserName(string userName = "")
         {
             try
             {
                 var results = CreateQuery()
-                    .Where(x => x.CreatorUser.FirstName.ToLower().Contains(userName.ToLower()) ||
+                    .Where(x => string.IsNullOrEmpty(userName) || 
+                                x.CreatorUser.FirstName.ToLower().Contains(userName.ToLower()) ||
                                 x.CreatorUser.LastName.ToLower().Contains(userName.ToLower())
+                                
                     ).ToList();
 
                 return Task.FromResult(new ListResultDto<SampleDto>(
