@@ -6,13 +6,13 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                    <div class="form-line">
-                        <input *ngIf="config.filtering" placeholder="Filter all columns"
-                                [ngTableFiltering]="config.filtering"
-                                class="form-control"
-                                (tableChanged)="onChangeTable(config)"/>
-                    </div>
-                    </div>         
+          <select class="selectpicker">
+  <option>Mustard</option>
+  <option>Ketchup</option>
+  <option>Relish</option>
+</select>
+                    
+                    </div>                                   
                 </div>
             </div>
             <br>

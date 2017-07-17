@@ -7,10 +7,8 @@
                 <div class="col-md-4">
                     <div class="form-group">
                     <div class="form-line">
-                        <input *ngIf="config.filtering" placeholder="Filter all columns"
-                                [ngTableFiltering]="config.filtering"
-                                class="form-control"
-                                (tableChanged)="onChangeTable(config)"/>
+                        <input [(ngModel)]="userName" placeholder="Enter user first name or last name. Then enter"                              
+                                class="form-control" (keypress)="eventHandler($event)"/>
                     </div>
                     </div>         
                 </div>

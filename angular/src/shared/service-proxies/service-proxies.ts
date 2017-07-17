@@ -15,6 +15,113 @@ import {Http, Headers, Response, RequestOptionsArgs} from '@angular/http';
 export const API_BASE_URL = new OpaqueToken('API_BASE_URL');
 
 @Injectable()
+export class ComboBoxItemsServiceProxy {
+    private http: Http = null; 
+    private baseUrl: string = undefined; 
+    protected jsonParseReviver: (key: string, value: any) => any = undefined;
+
+    constructor(@Inject(Http) http: Http, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http; 
+        this.baseUrl = baseUrl ? baseUrl : ""; 
+    }
+
+    /**
+     * @return Success
+     */
+    getAllStatus(): Observable<ListResultDtoOfComboBoxItemDto> {
+        let url_ = this.baseUrl + "/api/comboBoxItems/GetAllStatus";
+
+        const content_ = "";
+        
+        return this.http.request(url_, {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+				"Accept": "application/json; charset=UTF-8"
+            })
+        }).map((response) => {
+            return this.processGetAllStatus(response);
+        }).catch((response: any, caught: any) => {
+            if (response instanceof Response) {
+                try {
+                    return Observable.of(this.processGetAllStatus(response));
+                } catch (e) {
+                    return <Observable<ListResultDtoOfComboBoxItemDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ListResultDtoOfComboBoxItemDto>><any>Observable.throw(response);
+        });
+    }
+
+    protected processGetAllStatus(response: Response): ListResultDtoOfComboBoxItemDto {
+        const responseText = response.text();
+        const status = response.status; 
+
+        if (status === 200) {
+            let result200: ListResultDtoOfComboBoxItemDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ListResultDtoOfComboBoxItemDto.fromJS(resultData200) : new ListResultDtoOfComboBoxItemDto();
+            return result200;
+        } else if (status !== 200 && status !== 204) {
+            this.throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return null;
+    }
+
+    /**
+     * @return Success
+     */
+    getAllUsers(): Observable<ListResultDtoOfComboBoxItemDto> {
+        let url_ = this.baseUrl + "/api/comboBoxItems/GetAllUsers";
+
+        const content_ = "";
+        
+        return this.http.request(url_, {
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8", 
+				"Accept": "application/json; charset=UTF-8"
+            })
+        }).map((response) => {
+            return this.processGetAllUsers(response);
+        }).catch((response: any, caught: any) => {
+            if (response instanceof Response) {
+                try {
+                    return Observable.of(this.processGetAllUsers(response));
+                } catch (e) {
+                    return <Observable<ListResultDtoOfComboBoxItemDto>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ListResultDtoOfComboBoxItemDto>><any>Observable.throw(response);
+        });
+    }
+
+    protected processGetAllUsers(response: Response): ListResultDtoOfComboBoxItemDto {
+        const responseText = response.text();
+        const status = response.status; 
+
+        if (status === 200) {
+            let result200: ListResultDtoOfComboBoxItemDto = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ListResultDtoOfComboBoxItemDto.fromJS(resultData200) : new ListResultDtoOfComboBoxItemDto();
+            return result200;
+        } else if (status !== 200 && status !== 204) {
+            this.throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return null;
+    }
+
+    protected throwException(message: string, status: number, response: string, result?: any): any {
+        if(result !== null && result !== undefined)
+            throw result;
+        else
+            throw new SwaggerException(message, status, response);
+    }
+}
+
+@Injectable()
 export class SamplesServiceProxy {
     private http: Http = null; 
     private baseUrl: string = undefined; 
@@ -212,6 +319,73 @@ export class SamplesServiceProxy {
             throw result;
         else
             throw new SwaggerException(message, status, response);
+    }
+}
+
+export class ListResultDtoOfComboBoxItemDto { 
+    items: ComboBoxItemDto[];
+    constructor(data?: any) {
+        if (data !== undefined) {
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(ComboBoxItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfComboBoxItemDto {
+        return new ListResultDtoOfComboBoxItemDto(data);
+    }
+
+    toJS(data?: any) {
+        data = data === undefined ? {} : data;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJS());
+        }
+        return data; 
+    }
+
+    toJSON() {
+        return JSON.stringify(this.toJS());
+    }
+
+    clone() {
+        const json = this.toJSON();
+        return new ListResultDtoOfComboBoxItemDto(JSON.parse(json));
+    }
+}
+
+export class ComboBoxItemDto { 
+    value: string; 
+    text: string;
+    constructor(data?: any) {
+        if (data !== undefined) {
+            this.value = data["value"] !== undefined ? data["value"] : null;
+            this.text = data["text"] !== undefined ? data["text"] : null;
+        }
+    }
+
+    static fromJS(data: any): ComboBoxItemDto {
+        return new ComboBoxItemDto(data);
+    }
+
+    toJS(data?: any) {
+        data = data === undefined ? {} : data;
+        data["value"] = this.value !== undefined ? this.value : null;
+        data["text"] = this.text !== undefined ? this.text : null;
+        return data; 
+    }
+
+    toJSON() {
+        return JSON.stringify(this.toJS());
+    }
+
+    clone() {
+        const json = this.toJSON();
+        return new ComboBoxItemDto(JSON.parse(json));
     }
 }
 

@@ -20,5 +20,6 @@ export class SamplesByStatusComponent extends PagedListingComponentBase {
             this.length = response.items.length;
             this.refresh();
         });
+
     }
 }
