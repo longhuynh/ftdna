@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GeneByGene\GeneByGene.csproj" />
+    <ProjectReference Include="..\GeneByGene\GeneByGene.csproj" />
   </ItemGroup>
 
 </Project>

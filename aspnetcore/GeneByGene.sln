@@ -14,7 +14,7 @@ Project("{13B669BE-BB05-4DDF-9536-439F39A36129}") = "GeneByGene.Tests", "test\Ge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneByGene.Core", "src\GeneByGene.Core\GeneByGene.Core.csproj", "{C6B1895C-8354-4BC2-8872-E28F359C12EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneByGene", "GeneByGene\GeneByGene.csproj", "{89153395-DE4A-4E3B-8B13-010DFA3AF3F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneByGene", "src\GeneByGene\GeneByGene.csproj", "{89153395-DE4A-4E3B-8B13-010DFA3AF3F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
